@@ -1,0 +1,14 @@
+{
+  "name": "dozzrec",
+  "version": "1.0.0",
+  "description": "Issabel call recordings server. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dozz Technology Ltda",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
