@@ -1,36 +1,32 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const cors = require('cors');
 
 const app = express();
 const port = 5010;
 
-// Diretorio base onde estão salvas as gravações
-const recordingsBaseDir = '/var/spool/asterisk/monitor'; 
+app.use(cors({ origin: [ `https://dash.dozz.com.br` ], credentials: true }));
 
-app.get('/recording', (req, res) => {
-    const { year, month, day, callId } = req.query;
+app.get('/recording/:recordingPath', (req, res) => {
+    const { recordingPath } = req.params;
 
-    if (!year || !month || !day || !callId) {
+    if (!recordingPath) {
         return res.status(400).send('Parâmetros insuficientes');
     }
+    console.log(req.params)
+    // Garante que o caminho é absoluto
+    const resolvedPath = path.resolve(recordingPath);
 
-    // Constrói o caminho completo para o arquivo de gravação
-    const recordingDir = path.join(recordingsBaseDir, year, month, day);
-    fs.readdir(recordingDir, (err, files) => {
+    // Verifica se o arquivo existe
+    fs.access(resolvedPath, fs.constants.F_OK, (err) => {
         if (err) {
-            return res.status(500).send('Erro ao ler o diretório');
-        }
-
-        // Procura o arquivo de gravação que contém o callId
-        const recordingFile = files.find(file => file.includes(callId));
-
-        if (!recordingFile) {
+            console.log(err);
             return res.status(404).send('Arquivo não encontrado');
         }
 
-        const recordingPath = path.join(recordingDir, recordingFile);
-        res.sendFile(recordingPath);
+        // Envia o arquivo
+        res.sendFile(resolvedPath);
     });
 });
 
