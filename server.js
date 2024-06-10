@@ -9,26 +9,27 @@ const port = 5010;
 app.use(cors({ origin: '*', credentials: true }));
 // app.use(cors({ origin: [ `https://dash.dozz.com.br` ], credentials: true }));
 
-app.get('/recording/:recordingPath', (req, res) => {
-    const { recordingPath } = req.params;
+app.get('/recording', (req, res) => {
+    res.json('Hello')
+    // const { recordingPath } = req.params;
 
-    if (!recordingPath) {
-        return res.status(400).send('Parâmetros insuficientes');
-    }
-    console.log(req.params)
-    // Garante que o caminho é absoluto
-    const resolvedPath = path.resolve(recordingPath);
+    // if (!recordingPath) {
+    //     return res.status(400).send('Parâmetros insuficientes');
+    // }
+    // console.log(req.params)
+    // // Garante que o caminho é absoluto
+    // const resolvedPath = path.resolve(recordingPath);
 
-    // Verifica se o arquivo existe
-    fs.access(resolvedPath, fs.constants.F_OK, (err) => {
-        if (err) {
-            console.log(err);
-            return res.status(404).send('Arquivo não encontrado');
-        }
+    // // Verifica se o arquivo existe
+    // fs.access(resolvedPath, fs.constants.F_OK, (err) => {
+    //     if (err) {
+    //         console.log(err);
+    //         return res.status(404).send('Arquivo não encontrado');
+    //     }
 
-        // Envia o arquivo
-        res.sendFile(resolvedPath);
-    });
+    //     // Envia o arquivo
+    //     res.sendFile(resolvedPath);
+    // });
 });
 
 app.listen(port, () => {
