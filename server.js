@@ -6,7 +6,8 @@ const cors = require('cors');
 const app = express();
 const port = 5010;
 
-app.use(cors({ origin: [ `https://dash.dozz.com.br` ], credentials: true }));
+app.use(cors({ origin: '*', credentials: true }));
+// app.use(cors({ origin: [ `https://dash.dozz.com.br` ], credentials: true }));
 
 app.get('/recording/:recordingPath', (req, res) => {
     const { recordingPath } = req.params;
