@@ -12,26 +12,26 @@ app.use(cors({ origin: '*', credentials: true }));
 
 app.get('/recording', (req, res) => {
     console.log('Request params: ', req.params)
-    res.json('Hello')
-    // const { recordingPath } = req.params;
 
-    // if (!recordingPath) {
-    //     return res.status(400).send('Parâmetros insuficientes');
-    // }
-    // console.log(req.params)
-    // // Garante que o caminho é absoluto
-    // const resolvedPath = path.resolve(recordingPath);
+    const { recordingPath } = req.params;
 
-    // // Verifica se o arquivo existe
-    // fs.access(resolvedPath, fs.constants.F_OK, (err) => {
-    //     if (err) {
-    //         console.log(err);
-    //         return res.status(404).send('Arquivo não encontrado');
-    //     }
+    if (!recordingPath) {
+        return res.status(400).send('Parâmetros insuficientes');
+    }
+    console.log(req.params)
+    // Garante que o caminho é absoluto
+    const resolvedPath = path.resolve(recordingPath);
 
-    //     // Envia o arquivo
-    //     res.sendFile(resolvedPath);
-    // });
+    // Verifica se o arquivo existe
+    fs.access(resolvedPath, fs.constants.F_OK, (err) => {
+        if (err) {
+            console.log(err);
+            return res.status(404).send('Arquivo não encontrado');
+        }
+
+        // Envia o arquivo
+        res.sendFile(resolvedPath);
+    });
 });
 
 app.listen(port, () => {
