@@ -1,16 +1,12 @@
 const express = require('express');
-const cors = require('cors');
-
 const app = express();
-const port = 5011;
-
-app.use(cors({ origin: '*', credentials: true }));
+const PORT = 5011;
 
 app.get('/', (req, res) => {
-    console.log('Integrity')
-    res.status(200).json('OK')
+  console.log('Health Check');
+  res.status(200).send('OK');
 });
 
-app.listen(port, () => {
-    console.log(`Integrity server running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Integrity Server running on port ${PORT}`);
 });
