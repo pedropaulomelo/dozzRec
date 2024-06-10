@@ -8,7 +8,7 @@ app.use(cors({ origin: '*', credentials: true }));
 
 app.get('/integrity', (req, res) => {
     console.log('Integrity')
-    res.status(200)
+    res.status(200).json('OK')
 });
 
 app.listen(port, () => {
