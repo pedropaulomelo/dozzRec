@@ -10,10 +10,10 @@ const port = 5010;
 app.use(cors({ origin: '*', credentials: true }));
 // app.use(cors({ origin: [ `https://dash.dozz.com.br` ], credentials: true }));
 
-app.get('/recording/:recordingPath', (req, res) => {
-    console.log('Request params: ', req.params)
+app.get('/recording', (req, res) => {
+    console.log('Request query: ', req.query)
 
-    const { recordingPath } = req.params;
+    const { recordingPath } = req.query;
 
     if (!recordingPath) {
         return res.status(400).send('Parâmetros insuficientes');
