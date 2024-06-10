@@ -2,13 +2,18 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
-const integrity = require('./integrity');
+// const integrity = require('./integrity');
 
 const app = express();
 const port = 5010;
 
 app.use(cors({ origin: '*', credentials: true }));
 // app.use(cors({ origin: [ `https://dash.dozz.com.br` ], credentials: true }));
+
+app.get('/integrity', (req, res) => {
+    console.log('Integrity')
+    res.status(200).json('OK')
+});
 
 app.get('/recording', (req, res) => {
     console.log('Request params: ', req.params)
