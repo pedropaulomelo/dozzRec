@@ -6,7 +6,7 @@ const port = 5011;
 
 app.use(cors({ origin: '*', credentials: true }));
 
-app.get('/integrity', (req, res) => {
+app.get('/', (req, res) => {
     console.log('Integrity')
     res.status(200).json('OK')
 });
