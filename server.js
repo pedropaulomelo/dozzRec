@@ -10,6 +10,7 @@ app.use(cors({ origin: '*', credentials: true }));
 // app.use(cors({ origin: [ `https://dash.dozz.com.br` ], credentials: true }));
 
 app.get('/recording', (req, res) => {
+    console.log('Request params: ', req.params)
     res.json('Hello')
     // const { recordingPath } = req.params;
 
