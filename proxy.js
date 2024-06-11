@@ -4,7 +4,7 @@ const integrity = require('./integrity');
 
 const app = express();
 const HOST = '0.0.0.0';
-const PORT = 5012;
+const PORT = 5010;
 
 app.get('/recording', async (req, res) => {
   const { recordingPath } = req.query;
