@@ -5,7 +5,6 @@ const cors = require('cors');
 const integrity = require('./integrity');
 
 const app = express();
-
 const HOST = '0.0.0.0'
 const PORT = 5010;
 
@@ -34,5 +33,5 @@ app.get('/recording', (req, res) => {
 });
 
 app.listen(PORT, HOST, () => {
-    console.log(`Calls Recording server running on port ${port}`);
+    console.log(`Calls Recording server running on port ${PORT}`);
 });
