@@ -10,7 +10,7 @@ app.get('/recording', async (req, res) => {
   const { recordingPath } = req.query;
 
   if (!recordingPath) {
-    return res.status(400).send('Parâmetros insuficientes');
+    return res.status(400).send('Parâmetros insuficientes'); 
   }
 
   try {
