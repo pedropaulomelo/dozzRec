@@ -14,12 +14,13 @@ AWS.config.update({
 const s3 = new AWS.S3();
 const bucketName = process.env.BUCKET_NAME;
 const pathToWatch = '/var/spool/asterisk/monitor';
+const uploadDelay = 60000; // 1 minuto de atraso após a última modificação
 
 // Função para fazer upload dos arquivos para o S3
 const uploadToS3 = (filePath) => {
     const fileName = path.basename(filePath);
     const fileStream = fs.createReadStream(filePath);
-    
+
     const params = {
         Bucket: bucketName,
         Key: fileName,
@@ -35,37 +36,28 @@ const uploadToS3 = (filePath) => {
     });
 };
 
-// Verificar se o arquivo terminou de ser escrito
-const waitForFile = (filePath, callback) => {
-    let lastSize = 0;
-    let checkInterval = setInterval(() => {
-        fs.stat(filePath, (err, stats) => {
-            if (err) {
-                clearInterval(checkInterval);
-                console.log(`Failed to stat file ${filePath}:`, err);
-                return;
-            }
-
-            if (stats.size === lastSize) {
-                clearInterval(checkInterval);
-                callback(filePath);
-            } else {
-                lastSize = stats.size;
-            }
-        });
-    }, 5000); // Checar a cada segundo
-};
-
 // Monitorar a pasta de gravações
 const watcher = chokidar.watch(pathToWatch, {
     persistent: true,
     ignoreInitial: true
 });
 
+const fileTimers = new Map();
+
 watcher
     .on('add', filePath => {
         console.log(`File added: ${filePath}`);
-        waitForFile(filePath, uploadToS3);
+        if (fileTimers.has(filePath)) {
+            clearTimeout(fileTimers.get(filePath));
+        }
+        fileTimers.set(filePath, setTimeout(() => uploadToS3(filePath), uploadDelay));
+    })
+    .on('change', filePath => {
+        console.log(`File changed: ${filePath}`);
+        if (fileTimers.has(filePath)) {
+            clearTimeout(fileTimers.get(filePath));
+        }
+        fileTimers.set(filePath, setTimeout(() => uploadToS3(filePath), uploadDelay));
     })
     .on('error', error => console.log(`Watcher error: ${error}`));
 
