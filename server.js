@@ -1,10 +1,13 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const cors = require('cors');
 
 const app = express();
 const HOST = '0.0.0.0'
 const PORT = 5010;
+
+app.use(cors({ origin: '*', credentials: true }));
 
 app.get('/recording', (req, res) => {
     console.log('Request query: ', req.query);
