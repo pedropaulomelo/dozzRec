@@ -6,7 +6,7 @@ const app = express();
 const HOST = '0.0.0.0';
 const PORT = 5010;
 
-app.get('/forward', async (req, res) => {
+app.get('/recording', async (req, res) => {
   const { recordingPath } = req.query;
 
   if (!recordingPath) {
