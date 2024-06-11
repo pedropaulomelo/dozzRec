@@ -15,6 +15,7 @@ app.get('/recording', async (req, res) => {
 
   try {
     const response = await axios.get(`http://18.230.133.246:5010/recording?recordingPath=${recordingPath}`);
+    console.log(response)
     res.send(response.data);
   } catch (error) {
     console.error(error);
