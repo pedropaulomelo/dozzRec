@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const PORT = 3120;
+const PORT = 3007;
 
 app.get('/', (req, res) => {
   console.log('Health Check');

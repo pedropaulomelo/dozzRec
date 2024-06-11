@@ -5,7 +5,7 @@ const cors = require('cors');
 const integrity = require('./integrity');
 
 const app = express();
-const port = 3112;
+const port = 3007;
 
 app.use(cors({ origin: '*', credentials: true }));
 // app.use(cors({ origin: [ `https://dash.dozz.com.br` ], credentials: true }));
