@@ -1,15 +1,10 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const cors = require('cors');
-const integrity = require('./integrity');
 
 const app = express();
 const HOST = '0.0.0.0'
 const PORT = 5010;
-
-app.use(cors({ origin: '*', credentials: true }));
-// app.use(cors({ origin: [ `https://dash.dozz.com.br` ], credentials: true }));
 
 app.get('/recording', (req, res) => {
     console.log('Request query: ', req.query);
