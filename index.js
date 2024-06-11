@@ -15,8 +15,6 @@ const s3 = new AWS.S3();
 const bucketName = process.env.BUCKET_NAME;
 const pathToWatch = '/var/spool/asterisk/monitor';
 
-// console.log(process.env.BUCKET_ACCESS_KEY, process.env.BUCKET_SECRET_ACCESS_KEY, process.env.BUCKET_REGION, bucketName)
-
 // Função para fazer upload dos arquivos para o S3
 const uploadToS3 = (filePath) => {
     const fileName = path.basename(filePath);
@@ -37,6 +35,27 @@ const uploadToS3 = (filePath) => {
     });
 };
 
+// Verificar se o arquivo terminou de ser escrito
+const waitForFile = (filePath, callback) => {
+    let lastSize = 0;
+    let checkInterval = setInterval(() => {
+        fs.stat(filePath, (err, stats) => {
+            if (err) {
+                clearInterval(checkInterval);
+                console.log(`Failed to stat file ${filePath}:`, err);
+                return;
+            }
+
+            if (stats.size === lastSize) {
+                clearInterval(checkInterval);
+                callback(filePath);
+            } else {
+                lastSize = stats.size;
+            }
+        });
+    }, 1000); // Checar a cada segundo
+};
+
 // Monitorar a pasta de gravações
 const watcher = chokidar.watch(pathToWatch, {
     persistent: true,
@@ -46,7 +65,7 @@ const watcher = chokidar.watch(pathToWatch, {
 watcher
     .on('add', filePath => {
         console.log(`File added: ${filePath}`);
-        uploadToS3(filePath);
+        waitForFile(filePath, uploadToS3);
     })
     .on('error', error => console.log(`Watcher error: ${error}`));
 
