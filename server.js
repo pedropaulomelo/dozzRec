@@ -18,14 +18,12 @@ app.get('/recording', (req, res) => {
         return res.status(400).send('Parâmetros insuficientes');
     }
 
-    // Verifica se o arquivo existe diretamente no caminho fornecido
     fs.access(recordingPath, fs.constants.F_OK, (err) => {
         if (err) {
             console.log(err);
             return res.status(404).send('Arquivo não encontrado');
         }
 
-        // Envia o arquivo
         res.sendFile(recordingPath);
     });
 });
