@@ -53,7 +53,7 @@ const waitForFile = (filePath, callback) => {
                 lastSize = stats.size;
             }
         });
-    }, 1000); // Checar a cada segundo
+    }, 5000); // Checar a cada segundo
 };
 
 // Monitorar a pasta de gravações
