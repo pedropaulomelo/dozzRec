@@ -13,7 +13,7 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 const bucketName = process.env.BUCKET_NAME;
-const pathToWatch = '/var/spool/Asterisk/Monitor';
+const pathToWatch = '/var/spool/asterisk/monitor';
 
 // console.log(process.env.BUCKET_ACCESS_KEY, process.env.BUCKET_SECRET_ACCESS_KEY, process.env.BUCKET_REGION, bucketName)
 
