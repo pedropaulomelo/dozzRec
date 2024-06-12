@@ -27,7 +27,7 @@ amiConnection.on('managerevent', (evt) => {
         const callId = evt.uniqueid;
         const recordingPath = evt.value;
         recordingFiles[callId] = recordingPath;
-        console.log('CALL START: ', callId);
+        console.log('CALL START: ', callId, 'FROM: ', from, 'TO: ', to );
     }
 
     if  (evt.event === 'BridgeLeave' && evt.bridgenumchannels === '0' && evt.context === 'macro-dial-one') {
@@ -37,7 +37,7 @@ amiConnection.on('managerevent', (evt) => {
         const callId = evt.linkedid;
 
         // console.log(`Ligação de ${from} para ${to} foi encerrada - ID: ${callId}`);
-        console.log('CALL END: ', callId);
+        console.log('CALL END: ', callId, 'FROM: ', from, 'TO: ', to);
 
         const recordingFile = recordingFiles[callId];
 
