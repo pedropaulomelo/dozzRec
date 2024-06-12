@@ -23,10 +23,11 @@ amiConnection.on('managerevent', (evt) => {
     // console.log(evt)
 
     if (evt.event === 'VarSet' && evt.variable.MIXMONITOR_FILENAME === '') {
-        console.log(evt)
+        // console.log(evt)
         const callId = evt.uniqueid;
         const recordingPath = evt.value;
         recordingFiles[callId] = recordingPath;
+        console.log('CALL START: ', callId);
     }
 
     if  (evt.event === 'BridgeLeave' && evt.bridgenumchannels === '0' && evt.context === 'macro-dial-one') {
@@ -35,12 +36,13 @@ amiConnection.on('managerevent', (evt) => {
         const to = evt.connectedlinenum;
         const callId = evt.linkedid;
 
-        console.log(`Ligação de ${from} para ${to} foi encerrada - ID: ${callId}`);
+        // console.log(`Ligação de ${from} para ${to} foi encerrada - ID: ${callId}`);
+        console.log('CALL END: ', callId);
 
         const recordingFile = recordingFiles[callId];
         delete recordingFiles[callId];
 
-        console.log('Sending the filePath to the voice server: ', recordingFile)
+        // console.log('Sending the filePath to the voice server: ', recordingFile)
         uploadToS3(recordingFile);
     }
 });
