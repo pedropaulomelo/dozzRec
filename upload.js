@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 require('dotenv').config();
 const { sendAudioFile } = require('./sendnode');
+const { sendTranscription } = require('./send');
 
 // Configurar as credenciais da AWS
 AWS.config.update({
@@ -28,10 +29,13 @@ exports.uploadToS3 = (filePath) => {
     s3.upload(params, async (err, data) => {
         if (err) {
             console.log(`Failed to upload ${fileName}:`, err);
-        } else {
+        } else {1
             console.log(`Uploaded ${fileName} to ${bucketName}`);
             const response = await sendAudioFile(filePath);
             console.log('TRANSCRIPTION: ', response);
+            const callId = recordingPath.split('-').pop();
+            const transcResponse = await sendTranscription(callId, response);
+            console.log('SEND TRANSCRIPTION RESPONSE: ', transcResponse);
         }
     });
 };

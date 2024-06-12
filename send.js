@@ -1,3 +1,6 @@
-const { sendAudioFile } = require('./sendnode');
-const filePath = '/Users/dozz/Downloads/q-150-5031-20240611-171657-1718137017.2015830.wav';
-sendAudioFile(filePath);
+const axios = require('axios');
+
+exports.sendTranscription = async (callId, transcription) => {
+    const response = await axios.post('https://api.dozz.com.br/calls/transcription', {callId, transcription});
+    return response.data;
+}
