@@ -23,7 +23,7 @@ amiConnection.on('managerevent', (evt) => {
     // console.log(evt)
 
     if (evt.event === 'VarSet' && evt.variable.MIXMONITOR_FILENAME === '') {
-        // console.log(evt)
+        console.log(evt)
         const callId = evt.uniqueid;
         const recordingPath = evt.value;
         recordingFiles[callId] = recordingPath;
