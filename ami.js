@@ -40,9 +40,11 @@ amiConnection.on('managerevent', (evt) => {
         console.log('CALL END: ', callId);
 
         const recordingFile = recordingFiles[callId];
+
+        console.log('RECORDING FILE: ', recordingFile)
         delete recordingFiles[callId];
 
         // console.log('Sending the filePath to the voice server: ', recordingFile)
-        uploadToS3(recordingFile);
+        recordingFile &&  uploadToS3(recordingFile);
     }
 });
