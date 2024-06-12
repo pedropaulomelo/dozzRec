@@ -28,11 +28,13 @@ const uploadToS3 = (filePath) => {
         Body: fileStream
     };
 
-    s3.upload(params, (err, data) => {
+    s3.upload(params, async (err, data) => {
         if (err) {
             console.log(`Failed to upload ${fileName}:`, err);
         } else {
             console.log(`Uploaded ${fileName} to ${bucketName}`);
+            const response = await sendAudioFile(filePath);
+            console.log('TRANSCRIPTION: ', response);
         }
     });
 };
@@ -58,13 +60,7 @@ watcher
         if (fileTimers.has(filePath)) {
             clearTimeout(fileTimers.get(filePath));
         }
-        fileTimers.set(filePath, 
-            setTimeout(async () => {
-                const response = await sendAudioFile(filePath);
-                console.log('TRANSCRIPTION: ', response);
-                uploadToS3(filePath);
-            }, uploadDelay
-        ));
+        fileTimers.set(filePath, setTimeout(() => uploadToS3(filePath), uploadDelay));
     })
     .on('error', error => console.log(`Watcher error: ${error}`));
 
