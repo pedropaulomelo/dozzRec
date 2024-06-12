@@ -39,28 +39,39 @@ const uploadToS3 = (filePath) => {
     });
 };
 
+// Função para verificar se o arquivo está pronto para leitura
+function isFileReady(filePath) {
+    // Tenta abrir o arquivo em modo de leitura
+    try {
+      const fd = fs.openSync(filePath, 'r');
+      fs.closeSync(fd);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
 // Monitorar a pasta de gravações
 const watcher = chokidar.watch(pathToWatch, {
+    ignored: /^\./,
     persistent: true,
+    awaitWriteFinish: {
+        stabilityThreshold: 5000, // Tempo em milissegundos para esperar após a última modificação
+        pollInterval: 100         // Intervalo de polling em milissegundos
+    },
     ignoreInitial: true
 });
-
-const fileTimers = new Map();
 
 watcher
     .on('add', filePath => {
         console.log(`File added: ${filePath}`);
-        if (fileTimers.has(filePath)) {
-            clearTimeout(fileTimers.get(filePath));
-        }
-        fileTimers.set(filePath, setTimeout(() => uploadToS3(filePath), uploadDelay));
     })
     .on('change', filePath => {
         console.log(`File changed: ${filePath}`);
-        if (fileTimers.has(filePath)) {
-            clearTimeout(fileTimers.get(filePath));
-        }
-        fileTimers.set(filePath, setTimeout(() => uploadToS3(filePath), uploadDelay));
+        if (isFileReady(filePath)) {
+            console.log(`File ready: ${filePath}`);
+            uploadToS3(filePath)
+          };
     })
     .on('error', error => console.log(`Watcher error: ${error}`));
 
