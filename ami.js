@@ -3,7 +3,7 @@ const { uploadToS3 } = require('./upload');
 
 // Configuração de conexão
 
-const ip = 'http://localhost';
+const ip = '127.0.0.1';
 // const ip = 'portermaringa.dyndns.org';
 const port = 5038;  // Porta padrão do AMI
 const user = 'dozz';
