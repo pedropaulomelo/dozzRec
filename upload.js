@@ -33,7 +33,8 @@ exports.uploadToS3 = (filePath) => {
             console.log(`Uploaded ${fileName} to ${bucketName}`);
             const response = await sendAudioFile(filePath);
             console.log('TRANSCRIPTION: ', response);
-            const callId = recordingPath.split('-').pop();
+            const callId = fileName.split('-').pop();
+            console.log('CALL ID: ', callId)
             const transcResponse = await sendTranscription(callId, response);
             console.log('SEND TRANSCRIPTION RESPONSE: ', transcResponse);
         }
