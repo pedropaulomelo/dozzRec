@@ -31,7 +31,7 @@ amiConnection.on('managerevent', (evt) => {
         console.log('CALL START: ', callId, 'FROM: ', from );
     }
 
-    if  (evt.event === 'BridgeLeave' && evt.bridgenumchannels === '0' && evt.context === 'macro-dial-one') {
+    if  (evt.event === 'BridgeLeave' && evt.bridgenumchannels === '0') {
         // console.log(evt)
         const from = evt.calleridnum;
         const to = evt.connectedlinenum;
