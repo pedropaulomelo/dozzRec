@@ -7,15 +7,17 @@ const url = 'https://8281e92c1458.ngrok.app/transcribe';
 
 // Função para enviar o arquivo de áudio
 exports.sendAudioFile = async (filePath) => {
+    console.log('FILE_PATH: ', filePath)
     const form = new FormData();
     form.append('audio', fs.createReadStream(filePath));
 
     try {
+        console.log('CALLING TRANSCRIBER')
         const response = await axios.post(url, form, {
             headers: form.getHeaders()
         });
-        console.log(response.data);
-        // return response.data
+        // console.log(response.data);
+        return response.data
     } catch (error) {
         console.error('Erro ao enviar arquivo:', error.message);
     }

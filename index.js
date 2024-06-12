@@ -15,7 +15,7 @@ AWS.config.update({
 const s3 = new AWS.S3();
 const bucketName = process.env.BUCKET_NAME;
 const pathToWatch = '/var/spool/asterisk/monitor';
-const uploadDelay = 30000; // 1 minuto de atraso após a última modificação
+const uploadDelay = 60000; // 1 minuto de atraso após a última modificação
 
 // Função para fazer upload dos arquivos para o S3
 const uploadToS3 = (filePath) => {
@@ -58,7 +58,13 @@ watcher
         if (fileTimers.has(filePath)) {
             clearTimeout(fileTimers.get(filePath));
         }
-        fileTimers.set(filePath, setTimeout(() => sendAudioFile(filePath), uploadToS3(filePath), uploadDelay));
+        fileTimers.set(filePath, 
+            setTimeout(async () => {
+                const response = await sendAudioFile(filePath);
+                console.log('TRANSCRIPTION: ', response);
+                uploadToS3(filePath);
+            }, uploadDelay
+        ));
     })
     .on('error', error => console.log(`Watcher error: ${error}`));
 
