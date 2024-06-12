@@ -32,11 +32,11 @@ exports.uploadToS3 = (filePath) => {
         } else {
             console.log(`Uploaded ${fileName} to ${bucketName}`);
             const response = await sendAudioFile(filePath);
-            console.log('TRANSCRIPTION: ', response);
+            // console.log('TRANSCRIPTION: ', response);
             const callId = fileName.split('-').pop().split('.wav')[0];
             console.log('CALL ID: ', callId);
             const transcResponse = await sendTranscription(callId, response);
-            console.log('SEND TRANSCRIPTION RESPONSE: ', transcResponse);
+            // console.log('SEND TRANSCRIPTION RESPONSE: ', transcResponse);
         }
     });
 };
