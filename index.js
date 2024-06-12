@@ -51,6 +51,16 @@ function isFileReady(filePath) {
     }
   }
 
+  function monitorFileReady(filePath) {
+    const checkInterval = setInterval(() => {
+      if (isFileReady(filePath)) {
+        clearInterval(checkInterval);
+        console.log(`File Ready: ${filePath}`);
+        uploadToS3(filePath);
+      }
+    }, 1000); // Verifica a cada 1 segundo
+  }
+
 // Monitorar a pasta de gravações
 const watcher = chokidar.watch(pathToWatch, {
     ignored: /^\./,
@@ -65,13 +75,7 @@ const watcher = chokidar.watch(pathToWatch, {
 watcher
     .on('add', filePath => {
         console.log(`File added: ${filePath}`);
-    })
-    .on('change', filePath => {
-        console.log(`File changed: ${filePath}`);
-        if (isFileReady(filePath)) {
-            console.log(`File ready: ${filePath}`);
-            uploadToS3(filePath)
-          };
+        monitorFileReady(filePath);
     })
     .on('error', error => console.log(`Watcher error: ${error}`));
 
