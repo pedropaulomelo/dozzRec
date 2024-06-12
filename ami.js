@@ -25,9 +25,10 @@ amiConnection.on('managerevent', (evt) => {
     if (evt.event === 'VarSet' && evt.variable.MIXMONITOR_FILENAME === '') {
         // console.log(evt)
         const callId = evt.uniqueid;
+        const from = evt.calleridnum;
         const recordingPath = evt.value;
         recordingFiles[callId] = recordingPath;
-        console.log('CALL START: ', callId, 'FROM: ', from, 'TO: ', to );
+        console.log('CALL START: ', callId, 'FROM: ', from );
     }
 
     if  (evt.event === 'BridgeLeave' && evt.bridgenumchannels === '0' && evt.context === 'macro-dial-one') {
