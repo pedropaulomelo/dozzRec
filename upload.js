@@ -16,7 +16,7 @@ const s3 = new AWS.S3();
 const bucketName = process.env.BUCKET_NAME;
 
 // Função para fazer upload dos arquivos para o S3
-exports.uploadToS3 = (filePath) => {
+exports.uploadToS3 = (inCall, filePath) => {
     const fileName = path.basename(filePath);
     const fileStream = fs.createReadStream(filePath);
 
@@ -30,13 +30,17 @@ exports.uploadToS3 = (filePath) => {
         if (err) {
             console.log(`Failed to upload ${fileName}:`, err);
         } else {
-            // console.log(`Uploaded ${fileName} to ${bucketName}`);
             const response = await sendAudioFile(filePath);
-            // console.log('TRANSCRIPTION: ', response);
             const callId = fileName.split('-').pop().split('.wav')[0];
-            // console.log('CALL ID: ', callId);
-            const transcResponse = await sendTranscription(callId, response);
-            // console.log('SEND TRANSCRIPTION RESPONSE: ', transcResponse);
+            const transcResponse = await sendTranscription(inCall, callId, response);
         }
     });
 };
+
+// exports.uploadToS3 = async (inCall, filePath) => {
+//     const response = await sendAudioFile(filePath);
+//     const fileName = path.basename(filePath);
+//     const callId = fileName.split('-').pop().split('.wav')[0];
+//     const transcResponse = await sendTranscription(inCall, callId, response);
+//     console.log('AI ANALISYS: ', transcResponse);
+// }
