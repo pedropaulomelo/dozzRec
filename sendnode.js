@@ -13,11 +13,11 @@ exports.sendAudioFile = async (filePath) => {
     form.append('audio', fs.createReadStream(filePath));
 
     try {
-        // console.log('CALLING TRANSCRIBER')
+        console.log('CALLING TRANSCRIBER')
         const response = await axios.post(url, form, {
             headers: form.getHeaders()
         });
-        // console.log(response.data);
+        console.log(response.data);
         return response.data
     } catch (error) {
         console.error('Erro ao enviar arquivo:', error.message);
