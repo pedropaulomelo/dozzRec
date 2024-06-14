@@ -3,7 +3,7 @@ const FormData = require('form-data');
 const fs = require('fs');
 
 // URL do endpoint do servidor Flask
-const url = 'https://c402332d2f6b.ngrok.app/transcribe';
+const url = 'https://dozz.ngrok.app/transcribe';
 
 
 // Função para enviar o arquivo de áudio
